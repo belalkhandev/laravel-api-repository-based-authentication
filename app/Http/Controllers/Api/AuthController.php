@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\Auth\AuthInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -22,7 +23,8 @@ class AuthController extends Controller
         $rules = [
             'name' => 'required',
             'email' => 'required|unique:users,email',
-            'password' => 'required',
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required'
         ];
 
         //make validation
@@ -33,7 +35,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => false,
                 'errors' => $validation->errors()
-            ], 422);
+            ]);
         }
 
         return $this->auth->register($request);
@@ -56,14 +58,22 @@ class AuthController extends Controller
             return response()->json([
                 'status' => false,
                 'errors' => $validation->errors()
-            ], 422);
+            ]);
         }
 
         return $this->auth->login($request);
     }
 
+
     public function logout()
     {
+        if (Auth::check()) {
+            Auth::user()->AauthAcessToken()->delete();
+        }
 
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully logged out'
+        ]);
     }
 }

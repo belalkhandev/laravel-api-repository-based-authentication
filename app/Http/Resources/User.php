@@ -17,8 +17,8 @@ class User extends JsonResource
     {
         return [
             'id' => $this->id,
-            'test_name' => $this->name,
-            'email' => $this->address,
+            'name' => $this->name,
+            'email' => $this->email,
             'phone' => $this->phone,
             'birthdate' => $this->birthdate,
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d'),
