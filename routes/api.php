@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UsersController;
 use Illuminate\Http\Request;
 
 /*
@@ -15,4 +17,21 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group([
+    'prefix' => 'user',
+    'middleware' => 'cors'
+], function ($route) {
+    $route->post('register', [AuthController::class, 'register']);
+    $route->post('login', [AuthController::class, 'login']);
+});
+
+Route::group([
+    'prefix' => 'user',
+    'middleware' => ['cors', 'auth:api']
+], function ($route) {
+    $route->get('me', [UsersController::class, 'me']);
+    $route->get('list', [UsersController::class, 'users']);
+    $route->post('logout', [AuthController::class, 'logout']);
 });
