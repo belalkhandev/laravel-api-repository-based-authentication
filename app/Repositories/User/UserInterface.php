@@ -2,7 +2,8 @@
 namespace App\Repositories\User;
 
 interface UserInterface{
-    public function get($id);
+
+    public function authUser();
 
     public function all();
 }

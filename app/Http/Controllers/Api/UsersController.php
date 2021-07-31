@@ -3,17 +3,30 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\User\UserInterface;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
-    public function me(Request $request)
-    {
+    protected $user;
 
+    public function __construct(UserInterface $user)
+    {
+        $this->user = $user;
     }
 
-    public function users(Request $request)
+    public function me()
     {
 
+        return $this->user->authUser();
     }
+
+    public function users()
+    {
+        return $this->user->all();
+    }
+
+
 }

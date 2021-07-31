@@ -2,7 +2,9 @@
 namespace App\Repositories\Auth;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\User as ResourceUser;
 
 class AuthRepository implements AuthInterface{
 
@@ -19,7 +21,7 @@ class AuthRepository implements AuthInterface{
                 return response()->json([
                     'status' => true,
                     'message' => 'Logged in successfully',
-                    'user' => $user,
+                    'user' => ResourceUser::make($user),
                     'token' => $token
                 ]);
             } else {
@@ -43,6 +45,7 @@ class AuthRepository implements AuthInterface{
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->phone = $request->input('phone');
+        $user->birthdate = $request->input('birthdate') ? Carbon::parse($request->input('birthdate'))->format('Y-m-d') : null;
         $user->password = app('hash')->make($request->input('password'));
 
         if ($user->save()) {
@@ -51,7 +54,7 @@ class AuthRepository implements AuthInterface{
             return response()->json([
                 'status' => true,
                 'message' => 'User Registered Successfully',
-                'user' => $user,
+                'user' => ResourceUser::make($user),
                 'token' => $token
             ]);
         }
