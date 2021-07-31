@@ -42,7 +42,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-//set validation rules
+        //set validation rules
         $rules = [
             'email' => 'required',
             'password' => 'required',

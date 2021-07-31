@@ -7,6 +7,7 @@ use App\Repositories\User\UserInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -19,7 +20,6 @@ class UsersController extends Controller
 
     public function me()
     {
-
         return $this->user->authUser();
     }
 
